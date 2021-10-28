@@ -1,0 +1,25 @@
+@hostname = localhost
+@port = 3003
+
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+
+### login
+
+POST http://{{host}}/api/login HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "app": "ump",
+	"username":"admin",
+	"password":"password"
+}
+
+### refresh
+POST http://{{host}}/api/refresh HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "app": "ump",
+	"refreshToken":"1366356145173696512"
+}

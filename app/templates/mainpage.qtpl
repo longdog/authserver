@@ -1,0 +1,81 @@
+{% code
+type MainPage struct {
+	Locale []byte
+    Prefix []byte
+    Redirect []byte
+    App []byte
+    Error []byte
+}
+%}
+{% func (p *MainPage) Title() %}УМП Логин{% endfunc %}
+{% func (p *MainPage) Lang() %}{%z p.Locale %}{% endfunc %}
+{% func (p *MainPage) Body() %}
+ <main class="main">
+        <form id="loginForm" class="loginForm" action="{%z p.Prefix %}/login" method="post">
+        <input type="hidden" name="app" value="{%uz p.App %}" >
+        <input type="hidden" name="redirect" value="{%uz p.Redirect %}" >
+            <div class="loginForm__row">
+                <label class="loginForm__label" for="username">Username</label><input class="loginForm__input" type="text" id="username" name="username">
+            </div>
+            <div class="loginForm__row">
+                <label class="loginForm__label" for="password">Password</label><input class="loginForm__input" type="text" id="password" name="password">
+            </div>
+            {%= Err(p.Error) %}
+            <div class="loginForm__row loginForm__row--submit">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </main>
+{% endfunc %}
+{% func (p *MainPage) Style() %}
+.main{
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .loginForm{
+            border: 1px solid #ccc;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+        .loginForm__row{
+            display: flex;
+            margin: 10px 0;
+        }
+        .loginForm__label{
+            width: 100px;
+        }
+        .loginForm__input{
+            width: 150px;
+        }
+        .loginForm__row--submit{
+            justify-content: flex-end;
+        }
+{% endfunc %}
+{% func (p *MainPage) Scripts() %}
+ (function(){
+            const $form = document.getElementById("loginForm");
+            const $username = document.getElementById("username");
+            const $password = document.getElementById("password");
+
+            $form.addEventListener("submit", (e)=>{
+               
+                if (!$username.value.trim() || !$password.value.trim()){
+                    e.preventDefault();
+                    return;
+                }
+            });
+        })()
+{% endfunc %}
+
+{% func Err(err []byte) %}
+{% if len(err) > 0 %}
+    <div class="loginForm__row--error">
+        {%z err %}    
+    </div>
+{% endif %}
+{% endfunc %}

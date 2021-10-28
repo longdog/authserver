@@ -1,0 +1,48 @@
+{% interface
+Page {
+    Lang()
+	Title()
+	Body()
+    Style()
+    Scripts()
+}
+%}
+
+{% func PageTemplate(p Page) %}
+<!DOCTYPE html>
+<html lang="{%= p.Lang() %}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{%= p.Title() %}</title>
+    <style>
+    {% plain %}
+        html, body{
+            padding:0;
+            margin:0;
+            width:100%;
+            height: 100%;
+        }
+        {% endplain %}
+        {%= p.Style() %}
+    </style>
+</head>
+	<body>
+	  {%= p.Body() %}
+      <script>
+     {%= p.Scripts() %}
+     </script>
+	</body>
+</html>
+{% endfunc %}
+
+{% code 
+type BasePage struct {
+} 
+%}
+{% func (p *BasePage) Title() %}This is a base title{% endfunc %}
+{% func (p *BasePage) Lang() %}ru{% endfunc %}
+{% func (p *BasePage) Body() %}This is a base body{% endfunc %}
+{% func (p *BasePage) Style() %}This is a base css{% endfunc %}
+{% func (p *BasePage) Scripts() %}This is a base js{% endfunc %}
